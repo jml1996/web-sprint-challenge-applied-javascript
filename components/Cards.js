@@ -29,9 +29,7 @@ axios
         // console.log(response.data.articles);
         const articlesObjectByTopic = response.data.articles;
         const completeTopicsArray = ["javascript", "bootstrap", "technology", "jquery", "node"];
-        completeTopicsArray.forEach((topic) => {
-            articlesObjectByTopic[topic].forEach((topicData) => cardsDiv.appendChild(cardMaker(topicData)));
-        });
+        completeTopicsArray.forEach((topic) =>  articlesObjectByTopic[topic].forEach((topicData) => cardsDiv.appendChild(cardMaker(topicData))));
         
         // console.log(articleArrayNoCat);
         // response.data.articles.forEach((articleCat) => {
@@ -39,6 +37,11 @@ axios
         //     articleCat.forEach((article) => cardsDiv.appendChild(cardMaker(article)));
         // });
     })
+    // .then(() => {
+    //     const cardsArray = Array.from(document.querySelectorAll(".card"));
+    //     console.log(cardsArray);
+    //     cardsArray.forEach((card) => card.addEventListener("click", () => console.log(card.headline)));
+    // })
     .catch(() => console.log("Error:")) //error
     .finally(() => console.log("Done"));
 
@@ -71,8 +74,11 @@ function cardMaker (obj) {
     imgDiv.appendChild(image);
     authorDiv.appendChild(span);
 
+    // const cardsArray = Array.from(document.querySelectorAll(".card"));
+    //     console.log(cardsArray);
+    //     cardsArray.forEach((card) => card.addEventListener("click", () => console.log(card.headline)));
+    // })
+    cardDiv.addEventListener("click", () => console.log(headlineDiv.textContent));
+
     return cardDiv;
 }
-
-const cardsArray = Array.from(document.querySelectorAll(".card"));
-cardsArray.forEach((card) => card.addEventListener("click", () => console.log(card.headline)));
