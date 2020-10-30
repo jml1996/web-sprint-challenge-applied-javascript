@@ -19,12 +19,13 @@ axios
         // console.log(response.data.topics);
         response.data.topics.forEach((topic) => topicsDiv.appendChild(tabMaker({ tabTopic: topic })));
     })
-    .catch(() => console.log("Error:")) //error
+    .catch((err) => console.log("Error: ", err))
     .finally(() => console.log("Done"));
 
 function tabMaker({ tabTopic }){
     const tabDiv = document.createElement("div");
     tabDiv.classList.add("tab");
     tabDiv.textContent = tabTopic;
+
     return tabDiv;
 }

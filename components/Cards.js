@@ -22,38 +22,45 @@
 // Use your function to create a card for each of the articles, and append each card to the DOM.
 
 const cardsDiv = document.querySelector(".cards-container");
-
+// const completeTopicsObj = document.querySelectorAll(".tab");
+// const completeTopicsArray2 = Array.from(completeTopicsObj);
+// console.log(completeTopicsArray2);
 axios
     .get("https://lambda-times-api.herokuapp.com/articles")
     .then((response) => {
-        // console.log(response.data.articles);
-        const articlesObjectByTopic = response.data.articles;
-        const completeTopicsArray = ["javascript", "bootstrap", "technology", "jquery", "node"];
-        completeTopicsArray.forEach((topic) =>  articlesObjectByTopic[topic].forEach((topicData) => cardsDiv.appendChild(cardMaker(topicData))));
+        let completeTopicsArray = ["javascript", "bootstrap", "technology", "jquery", "node"];
         
-        // console.log(articleArrayNoCat);
-        // response.data.articles.forEach((articleCat) => {
-        //     console.log(articleCat);
-        //     articleCat.forEach((article) => cardsDiv.appendChild(cardMaker(article)));
-        // });
+
+        // Below for stretch
+        const allTabDivs = document.querySelectorAll(".tab");
+        const allTabDivsArray = Array.from(allTabDivs);
+        let indexToRemove;
+        allTabDivsArray.forEach((tab) => tab.addEventListener("click", (event) => {
+            const tabToRemove = event.target.textContent;
+            indexToRemove = completeTopicsArray.indexOf(tabToRemove);
+            completeTopicsArray.splice(indexToRemove, 1);
+
+            cardsDiv.innerHTML = '';
+            const articlesObjectByTopic = response.data.articles;
+            completeTopicsArray.forEach((topic) =>  articlesObjectByTopic[topic].forEach((topicData) => cardsDiv.appendChild(cardMaker(topicData))));
+            completeTopicsArray = ["javascript", "bootstrap", "technology", "jquery", "node"];
+        }));
+        // Above for stretch
+
+        const articlesObjectByTopic = response.data.articles;
+        completeTopicsArray.forEach((topic) =>  articlesObjectByTopic[topic].forEach((topicData) => cardsDiv.appendChild(cardMaker(topicData))));
     })
-    // .then(() => {
-    //     const cardsArray = Array.from(document.querySelectorAll(".card"));
-    //     console.log(cardsArray);
-    //     cardsArray.forEach((card) => card.addEventListener("click", () => console.log(card.headline)));
-    // })
-    .catch(() => console.log("Error:")) //error
+    .catch((err) => console.log("Error: ", err))
     .finally(() => console.log("Done"));
 
 function cardMaker (obj) {
-    // debugger;
     // console.log(obj);
-    const cardDiv = document.createElement("div"); //.card
-    const headlineDiv = document.createElement("div"); //.headline, text: {headline}
-    const authorDiv = document.createElement("div"); //.author
-        const imgDiv = document.createElement("div"); //.img-container
+    const cardDiv = document.createElement("div");
+    const headlineDiv = document.createElement("div");
+    const authorDiv = document.createElement("div");
+        const imgDiv = document.createElement("div"); 
             const image = document.createElement("img");
-        const span = document.createElement("span"); // text: By {author's name}
+        const span = document.createElement("span"); 
 
     cardDiv.classList.add("card");
     headlineDiv.classList.add("headline");
@@ -64,21 +71,17 @@ function cardMaker (obj) {
     image.src = obj.authorPhoto;
     span.textContent = `By ${obj.authorName}`;
 
-
-    //img source
-
-
     cardDiv.appendChild(headlineDiv);
     cardDiv.appendChild(authorDiv);
     authorDiv.appendChild(imgDiv);
     imgDiv.appendChild(image);
     authorDiv.appendChild(span);
 
-    // const cardsArray = Array.from(document.querySelectorAll(".card"));
-    //     console.log(cardsArray);
-    //     cardsArray.forEach((card) => card.addEventListener("click", () => console.log(card.headline)));
-    // })
     cardDiv.addEventListener("click", () => console.log(headlineDiv.textContent));
 
     return cardDiv;
+}
+
+function tabChecker() {
+    console.log(document.querySelectorAll(".tab").textContent);
 }
